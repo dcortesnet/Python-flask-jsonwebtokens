@@ -14,8 +14,8 @@ def login():
         if username == "admin" and password == "123":
             token = jwt.encode({'username': username}, secret_key, algorithm='HS256')
             return jsonify({'token': token}), 200
-        else:
-            return jsonify({'message': 'Authentication failed'}), 401
+        
+        return jsonify({'message': 'Authentication failed'}), 401
     except Exception as e:
         print(e)
         return jsonify({'message': 'Internal server error'}), 500
@@ -38,7 +38,6 @@ def verify_token(func):
         except jwt.InvalidTokenError:
             return jsonify({'message': 'Invalid token'}), 403
     return wrapper
-
 
 @app.route('/protected', methods=['GET'])
 @verify_token
